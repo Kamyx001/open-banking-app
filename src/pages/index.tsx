@@ -1,12 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { Header } from "../components/Header/Header";
-import Link from "next/link";
-import { Session } from "next-auth";
-import Button from "@mui/material/Button";
-import Iphone from "../components/Iphone/Iphone";
+import { useSession, signOut } from 'next-auth/react';
+import Navbar from "../components/Navbar/Navbar";
 
 const Home: NextPage = () => {
   const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
@@ -19,34 +15,13 @@ const Home: NextPage = () => {
         <title>app</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Navbar/>
 
-      <main className="container mx-auto flex flex-col items-center justify-center h-screen p-4">
-        {/* <Header username={""} onLogin={signIn} onLogout={signOut}></Header> */}
-        {session != null ? (
-          <LoggedIn session={session} expires={""} />
-        ) : (
-          <Link href="/login">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Sign in
-            </button>
-          </Link>
-        )}
-      </main>
+      <div className="bg-gradient-to-tr from-main to-secondary h-screen p-4">
+      <button className="m-[100px]" onClick={() => signOut()}>sign out</button>
+      </div>
     </>
   );
 };
-
-const LoggedIn = (session: Session) => {
-  return (
-    <>
-      <h1>Hello {session.user?.name}</h1>
-      <p>{session.user?.email}</p>
-      <Button onClick={() => signOut()}>123</Button>
-    </>
-  )
-}
-
 
 export default Home;
